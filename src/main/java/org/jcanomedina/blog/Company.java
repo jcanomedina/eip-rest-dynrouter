@@ -7,6 +7,8 @@ public class Company {
 	private double debt ;
 	private double equity ;
 	
+	public Company() { } 
+	
 	public Company(int id, String name, double debt, double equity) {
 		super();
 		this.id = id;
