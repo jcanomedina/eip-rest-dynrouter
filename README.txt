@@ -1,4 +1,4 @@
-EIP Dyanmic Router implementation
+EIP Dynamic Router implementation
 =================================
 
 Based on Apache Camel 2.15.1, Spark Rest services and ActiveMQ
