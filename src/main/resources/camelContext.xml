@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+  <bean id="mySlip" class="org.jcanomedina.blog.DynamicRouter"/>
+  <camelContext trace="false" xmlns="http://camel.apache.org/schema/spring">
+  <restConfiguration component="spark-rest" bindingMode="json"/>
+  <rest path="/company" customId="true" id="rs_company">
+    <get uri="/view/{id}" outType="org.jcanomedina.blog.Company">
+      <to uri="bean:companyService?method=getCompany(${header.id})"/>
+    </get>
+    <get uri="/list" outType="org.jcanomedina.blog.Company">
+      <to uri="bean:companyService?method=listCompanies"/>
+    </get>
+    <put uri="/new" type="org.jcanomedina.blog.Company" customId="true" id="newCompany">
+      <to uri="direct:pipelineNewCompany"/>
+    </put>
+  </rest>
+  
+  <route>
+    <from uri="direct:pipelineNewCompany"/>
+    <bean ref="companyService" method="addCompany" beanType="org.jcanomedina.blog.CompanyService"/>
+    <log message="Got ${body}"/>
+    <dynamicRouter id="debtSelector">
+      <method bean="mySlip" method="slip"></method>
+    </dynamicRouter>
+  </route>
+</camelContext>
+</beans> 
