@@ -15,22 +15,14 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 
-        restConfiguration().component("spark-rest").bindingMode(RestBindingMode.json)
-            // and output using pretty print
-            .dataFormatProperty("prettyPrint", "true");
-
-        // this user REST service is json only
-        rest("/user").consumes("application/json").produces("application/json")
-
-            .get("/view/{id}").outType(User.class)
-                .to("bean:userService?method=getUser(${header.id})")
-
-            .get("/list").outTypeList(User.class)
-                .to("bean:userService?method=listUsers")
-
-            .put("/update").type(User.class).outType(User.class)
-                .to("bean:userService?method=updateUser");
-
+<route>
+  <from uri="activemq:SomeQueue"/>
+  <pipeline>
+    <bean ref="foo"/>
+    <bean ref="bar"/>
+    <to uri="activemq:OutputQueue"/>
+  </pipeline>
+</route>
 -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -44,18 +36,15 @@
   <bean id="companyService" class="org.jcanomedina.blog.CompanyService"/>
 
   <camelContext xmlns="http://camel.apache.org/schema/spring">
-  	<camel:restConfiguration component="spark-rest" bindingMode="json"/>
-  	<camel:rest path="/company">
-  		<camel:get uri="/view/{id}" outType="org.jcanomedina.blog.Company"> 
-  			<camel:to uri="bean:companyService?method=getCompany(${header.id})"/>
-  		</camel:get>
-  		<camel:get uri="/list" outType="org.jcanomedina.blog.Company"> 
-  			<camel:to uri="bean:companyService?method=listCompanies"/>
-  		</camel:get>
-  		<camel:put uri="/new" type="org.jcanomedina.blog.Company"> 
-  			<camel:to uri="bean:companyService?method=addCompany"/>
-  		</camel:put>
-  	</camel:rest>
-  </camelContext>
+  <restConfiguration component="spark-rest" bindingMode="json"/>
+  <rest path="/company">
+    <get uri="/view/{id}" outType="org.jcanomedina.blog.Company">
+      <to uri="bean:companyService?method=getCompany(${header.id})"/>
+    </get>
+    <get uri="/list" outType="org.jcanomedina.blog.Company">
+      <to uri="bean:companyService?method=listCompanies"/>
+    </get>
+  </rest>
+</camelContext>
 
 </beans>
