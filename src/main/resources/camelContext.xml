@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:camel="http://camel.apache.org/schema/spring"
+  	   xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       		http://camel.apache.org/schema/spring 
+       		http://camel.apache.org/schema/spring/camel-spring.xsd
+       		http://www.springframework.org/schema/context 
+       		http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+       		
 
+  <context:component-scan base-package="org.jcanomedina.blog" />
   <bean id="mySlip" class="org.jcanomedina.blog.DynamicRouter"/>
+  
+  <!-- create a Camel ActiveMQ component to use, using the Spring bean style -->
+  <!-- we use the vm protocol to communicate intra-jvm which is much faster than tcp -->
+  <bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+	<!-- vm://myBroker is the vm protocol, and myBroker is the broker name -->
+	<property name="brokerURL" value="vm://myBroker?create=false&amp;waitForStart=5000"/>
+  </bean>
+
   <camelContext trace="false" xmlns="http://camel.apache.org/schema/spring">
   <restConfiguration component="spark-rest" bindingMode="json"/>
   <rest path="/company" customId="true" id="rs_company">
@@ -16,17 +31,27 @@
       <to uri="bean:companyService?method=listCompanies"/>
     </get>
     <put uri="/new" type="org.jcanomedina.blog.Company" customId="true" id="newCompany">
-      <to uri="direct:pipelineNewCompany"/>
+      <to uri="direct:start"/>
+    </put>
+    <get uri="/ratio" outType="Double">
+      <to uri="bean:companyService?method=getRatio"/>
+    </get>
+    <put uri="/ratio" type="Double">
+      <to uri="bean:companyService?method=setRatio"/>
     </put>
   </rest>
-  
   <route>
-    <from uri="direct:pipelineNewCompany"/>
-    <bean ref="companyService" method="addCompany" beanType="org.jcanomedina.blog.CompanyService"/>
-    <log message="Got ${body}"/>
+    <from uri="direct:start" id="startNewCompany">
+      <description/>
+    </from>
+    <bean ref="companyService" method="addCompany" beanType="org.jcanomedina.blog.interfaces.ICompanyService"/>
     <dynamicRouter id="debtSelector">
-      <method bean="mySlip" method="slip"></method>
+      <method bean="mySlip" ref="mySlip" method="slip"></method>
     </dynamicRouter>
+  </route>
+  <route>
+    <from uri="direct:queueProfitCompany"/>
+    <to uri="activemq:queue:profitCompany"/>
   </route>
 </camelContext>
 </beans> 
