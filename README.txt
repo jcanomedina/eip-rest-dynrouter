@@ -16,6 +16,8 @@ You can also try the example from Maven using
 
 ... and use the following url
 
-  http://localhost:8080/
+Some samples of REST invocation are:
+
+  http://localhost:8080/company/list
 
 @jcanomedina
