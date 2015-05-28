@@ -1,10 +1,10 @@
-package org.jcanomedina.blog;
+package org.jcanomedina.blog.camel;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.jcanomedina.blog.interfaces.ICompanyService;
+import org.jcanomedina.blog.camel.interfaces.ICompanyService;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,8 +1,8 @@
-package org.jcanomedina.blog.interfaces;
+package org.jcanomedina.blog.camel.interfaces;
 
 import java.util.Collection;
 
-import org.jcanomedina.blog.Company;
+import org.jcanomedina.blog.camel.Company;
 
 public interface ICompanyService {
 

@@ -1,10 +1,10 @@
-package org.jcanomedina.blog;
+package org.jcanomedina.blog.camel;
 
 import java.util.Map;
 
 import org.apache.camel.Properties;
 import org.apache.log4j.Logger;
-import org.jcanomedina.blog.interfaces.ICompanyService;
+import org.jcanomedina.blog.camel.interfaces.ICompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,11 +37,14 @@ public class DynamicRouter {
 	    properties.put("invoked", invoked);
 	 
 		if (invoked == 1) {
-			if (company.getEQRatio() < service.getRatio()) { 
-				log.info("invoked="+invoked+" body: "+company+" CompanyEQRatio: "+company.getEQRatio()+" Ratio: "+service.getRatio());
-				return "direct:queueProfitCompany";
+			if (company.getEQRatio() <= service.getRatio()) { 
+				log.info("[Profit Company] Company: "+company.getName()+" CompanyEQRatio: "+company.getEQRatio()+" Ratio: "+service.getRatio());
+				return "direct:profitCompany";
 			}
-			else return "mock:a";
+			else { 
+				log.info("[Non-Profit Company] Company: "+company.getName()+" CompanyEQRatio: "+company.getEQRatio()+" Ratio: "+service.getRatio());
+				return "direct:nonProfitCompany";
+			}
 		}
 		
 	    // no more so return null

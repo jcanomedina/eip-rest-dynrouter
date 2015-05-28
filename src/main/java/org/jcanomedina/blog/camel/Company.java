@@ -1,4 +1,4 @@
-package org.jcanomedina.blog;
+package org.jcanomedina.blog.camel;
 
 import java.io.Serializable;
 
