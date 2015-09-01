@@ -32,7 +32,7 @@
     <property name="brokerURL" value="vm://myBroker?create=false&amp;waitForStart=5000"/>
   </bean>
 
-  <camelContext trace="false" xmlns="http://camel.apache.org/schema/spring">
+  <!-- to uri="jms:queue:profitCompany?exchangePattern=InOnly"/ --><camelContext trace="false" xmlns="http://camel.apache.org/schema/spring">
   <restConfiguration component="spark-rest" bindingMode="json"/>
   <rest path="/company" customId="true" id="rs_company">
     <get uri="/view/{id}" outType="org.jcanomedina.blog.camel.Company">
@@ -51,27 +51,35 @@
       <to uri="bean:companyService?method=setRatio"/>
     </put>
   </rest>
-  
   <route>
     <from uri="direct:start" id="startNewCompany">
       <description/>
     </from>
+    <log message="[startNewCompany] Message: ${body}"/>
     <bean ref="companyService" method="addCompany" beanType="org.jcanomedina.blog.camel.interfaces.ICompanyService"/>
     <dynamicRouter id="debtSelector">
       <method bean="mySlip" ref="mySlip" method="slip"></method>
     </dynamicRouter>
   </route>
-  
   <route>
     <from uri="direct:profitCompany"/>
-    <log message="[profitCompany] Message: ${body}"/>
-    <to uri="jms:queue:profitCompany?exchangePattern=InOnly"/>
-  </route>  
-
+    <log message="[profitCompany] Input Message: ${body}"/>
+    <to uri="jms:queue:profitCompanyInbox"/>
+  </route>
+  <route>
+    <from uri="jms:queue:profitCompanyInbox"/>
+    <log message="Routing profitable company from inbox to outbox queue with data ${body}"/>
+    <to uri="jms:queue:profitCompanyOutbox?exchangePattern=InOnly"/>
+  </route>
   <route>
     <from uri="direct:nonProfitCompany"/>
-    <log message="[nonProfitCompany] Message: ${body}"/>
-    <to uri="jms:queue:nonProfitCompany?exchangePattern=InOnly"/>
-  </route>  
+    <log message="[nonProfitCompany] Input Message: ${body}"/>
+    <to uri="jms:queue:nonProfitCompanyInbox"/>
+  </route>
+  <route>
+    <from uri="jms:queue:nonProfitCompanyInbox"/>
+    <log message="Routing non-profitable company from inbox to outbox queue with data ${body}"/>
+    <to uri="jms:queue:nonProfitCompanyOutbox?exchangePattern=InOnly"/>
+  </route>
 </camelContext>
 </beans> 
