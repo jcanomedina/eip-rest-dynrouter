@@ -16,30 +16,25 @@ You can also try the example from Maven using
    mvn jetty:run
    
 ## REST invocations
-###HTTP GET Requests:
-* Get Company List: 	http://localhost:8080/company/list
-* Get Company 100: 	http://localhost:8080/company/view/100
-* Get Ratio:			http://localhost:8080/company/ratio
+### HTTP GET Requests:
+* Get Company List: 	[http://localhost:8080/company/list](http://localhost:8080/company/list)
+* Get Company 100: 		[http://localhost:8080/company/view/100](http://localhost:8080/company/view/100)
+* Get Ratio:			[http://localhost:8080/company/ratio](http://localhost:8080/company/ratio)
 
-###HTTP PUT Requests:
-* New Company:		http://localhost:8080/company/new 
-Input data with ratio <= 10:
-{
-"id": 300,
-"name": "Unisys",
-"debt": 1000,
-"equity": 2000
-} 
+### HTTP PUT Requests:
+* New Company:			[http://localhost:8080/company/new](http://localhost:8080/company/new) 
 
-Input data with ratio > 10:
-{
-"id": 400,
-"name": "IBM",
-"debt": 100000,
-"equity": 2000
-}
+|Input data with ratio <= 10|Input data with ratio > 10|
+|---------------------------|--------------------------|
+|{							|{						   |
+|"id": 300,					|"id": 400,				   |
+|"name": "Unisys",			|"name": "IBM",			   |
+|"debt": 1000,				|"debt": 100000,		   |
+|"equity": 2000				|"equity": 2000			   |
+|} 							|}						   |
+|---------------------------|--------------------------|
 
-* Set Ratio: 			http://localhost:8080/company/ratio 
+* Set Ratio: 			[http://localhost:8080/company/ratio](http://localhost:8080/company/ratio)
 Input data: 
 25
 
