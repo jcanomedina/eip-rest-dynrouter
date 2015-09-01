@@ -41,12 +41,7 @@ You can also try the example from Maven using
 
 |Input data with ratio <= 10|
 |---------------------------|
-|{							|
 |25					|
-|"name": "Unisys",			|
-|"debt": 1000,				|
-|"equity": 2000				|
-|} 							|
 
 
 [@jcanomedina](https://twitter.com/jcanomedina)
