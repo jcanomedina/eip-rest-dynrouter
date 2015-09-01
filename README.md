@@ -32,11 +32,10 @@ You can also try the example from Maven using
 |"debt": 1000,				|"debt": 100000,		   |
 |"equity": 2000				|"equity": 2000			   |
 |} 							|}						   |
-|---------------------------|--------------------------|
 
 * Set Ratio: 			[http://localhost:8080/company/ratio](http://localhost:8080/company/ratio)
 Input data: 
 25
 
-@jcanomedina
+[@jcanomedina](https://twitter.com/jcanomedina)
 
