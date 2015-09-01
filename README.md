@@ -39,5 +39,15 @@ You can also try the example from Maven using
 |25		   |
 |		   |
 
+|Input data with ratio <= 10|Input data with ratio > 10|
+|---------------------------|--------------------------|
+|{							|{						   |
+|25					|"id": 400,				   |
+|"name": "Unisys",			|"name": "IBM",			   |
+|"debt": 1000,				|"debt": 100000,		   |
+|"equity": 2000				|"equity": 2000			   |
+|} 							|}						   |
+
+
 [@jcanomedina](https://twitter.com/jcanomedina)
 
