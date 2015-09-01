@@ -37,6 +37,7 @@ You can also try the example from Maven using
 |Input data|
 |----------|
 |25		   |
+|		   |
 
 [@jcanomedina](https://twitter.com/jcanomedina)
 
