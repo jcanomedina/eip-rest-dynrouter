@@ -34,13 +34,9 @@ You can also try the example from Maven using
 |} 							|}						   |
 
 * Set Ratio: 			[http://localhost:8080/company/ratio](http://localhost:8080/company/ratio)
-|Input data|
-|----------|
-|25		   |
-|		   |
 
-|Input data with ratio <= 10|
-|---------------------------|
+|Input data |
+|-----------|
 |25					|
 
 
