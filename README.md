@@ -15,7 +15,7 @@ deploy folder of Apache Tomcat.
 You can also try the example from Maven using
    mvn jetty:run
    
-## REST invocations
+## REST API
 ### HTTP GET Requests:
 * Get Company List: 	[http://localhost:8080/company/list](http://localhost:8080/company/list)
 * Get Company 100: 		[http://localhost:8080/company/view/100](http://localhost:8080/company/view/100)
