@@ -32,7 +32,7 @@
     <property name="brokerURL" value="vm://myBroker?create=false&amp;waitForStart=5000"/>
   </bean>
 
-  <!-- to uri="jms:queue:profitCompany?exchangePattern=InOnly"/ --><camelContext trace="false" xmlns="http://camel.apache.org/schema/spring">
+  <camelContext trace="false" xmlns="http://camel.apache.org/schema/spring">
   <restConfiguration component="spark-rest" bindingMode="json"/>
   <rest path="/company" customId="true" id="rs_company">
     <get uri="/view/{id}" outType="org.jcanomedina.blog.camel.Company">
@@ -64,22 +64,12 @@
   <route>
     <from uri="direct:profitCompany"/>
     <log message="[profitCompany] Input Message: ${body}"/>
-    <to uri="jms:queue:profitCompanyInbox"/>
-  </route>
-  <route>
-    <from uri="jms:queue:profitCompanyInbox"/>
-    <log message="Routing profitable company from inbox to outbox queue with data ${body}"/>
-    <to uri="jms:queue:profitCompanyOutbox?exchangePattern=InOnly"/>
+    <to uri="jms:queue:profitCompanyInbox?exchangePattern=InOnly"/>
   </route>
   <route>
     <from uri="direct:nonProfitCompany"/>
     <log message="[nonProfitCompany] Input Message: ${body}"/>
-    <to uri="jms:queue:nonProfitCompanyInbox"/>
-  </route>
-  <route>
-    <from uri="jms:queue:nonProfitCompanyInbox"/>
-    <log message="Routing non-profitable company from inbox to outbox queue with data ${body}"/>
-    <to uri="jms:queue:nonProfitCompanyOutbox?exchangePattern=InOnly"/>
+    <to uri="jms:queue:nonProfitCompanyInbox?exchangePattern=InOnly"/>
   </route>
 </camelContext>
 </beans> 
